@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <section id="register" class="register-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-sm-offset-2">
+					<h2>Update Profile</h2>
+
+					{% if submitted%}
+					<p>Your profile has been updated</p>
+					<a href="{% url 'dashboard' %}">Return to dashboard</a>
+					{% else %}
+
+					<form id = "profile_form" method="post" action="/user/update_profile/" enctype="multipart/form-data">
+
+						{% csrf_token %}
+
+						<ul>
+							<li><label>Affiliation:</label>{{profile_form.affiliation}}</li>
+							<li><label>Profile Pic:</label><div class="file-input">{{profile_form.picture}}</div></li>
+							<li><label>Bio:</label>{{profile_form.bio}}</li>
+							<li><label>URL:</label>{{profile_form.url}}</li>
+							<li><label>LinkedIn:</label>{{profile_form.linkedin}}</li>
+							<li><label>Twitter:</label>{{profile_form.twitter}}</li>
+						</ul>
+
+						<input class="btn btn-primary page-scroll" type="submit" name="submit" value="Save" />
+
+					</form>
+					<div class="col-lg-12 center">
+						<a class="btn btn-primary page-scroll" href="{% url 'dashboard' %}">Cancel</a>
+					</div>
+					{% endif %}
+
+				</div>
+			</div>
+		</div>
+	</section>
+
+{% endblock %}

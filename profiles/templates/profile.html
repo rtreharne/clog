@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load thumbnail %}
+
+{% block content %}
+    <section id="profile" class="dashboard-profile-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+					<h2>{{profile.user.first_name}} {{profile.user.last_name}}</h2>
+					{% thumbnail profile.picture "150x150" crop="center" as im %}
+					<img class="profile-pic-lg" src="{{im.url}}" name="{{user.first_name}} {{user.last_name}}">
+					{% endthumbnail %}
+					<h3>{{profile.affiliation}}</h3>
+					<p>
+						{% if profile.url %}
+						<a href="{{profile.url}}" target="_blank"><i class="fa fa-globe fa-3x"></i></a>
+						{% endif %}
+						{% if profile.linkedin %}
+						<a href="{{profile.linkedin}}" target="_blank"><i class="fa fa-linkedin-square fa-3x"></i></a>
+						{% endif %}
+						{% if profile.twitter %}
+						<a href="{{profile.twitter}}" target="_blank"><i class="fa fa-twitter-square fa-3x"></i></a>
+						{% endif %}
+					</p>
+					{% if profile.bio %}
+					<p class="bio">{{profile.bio}}</p>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+	</section>
+{% endblock %}
