@@ -24,5 +24,5 @@ class ContactView(CreateView):
     def get_context_data(self, **kwargs):
         ctx = super(ContactView, self).get_context_data(**kwargs)
         ctx['submitted'] = self.submitted
-        ctx['label'] = kwargs
+        ctx['id'] = self.kwargs['project_id']
         return ctx

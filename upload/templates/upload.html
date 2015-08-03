@@ -6,15 +6,20 @@
             <div class="row">
                 <div class="col-lg-8 col-sm-offset-2">
 					<h2>Upload Data</h2>
+					<p>
+					<a type="button" class="btn btn-primary" href="/media/files/template.csv">
+						<span class="glyphicon glyphicon-file"></span> Template</span> 
+					</a>
+					</p>
 					
 					{% if submitted %}
 					<p>Upload successful</p>
-					<div class="col-lg-12 center">
+                    <p>
 						<a class="btn btn-primary page-scroll" href="">Upload More</a>
-					</div><br />
-					<div class="col-lg-12 center">
-						<a class="btn btn-primary page-scroll" href="{% url 'dashboard' %}">Return to Dashbard</a>
-					</div>
+                    </p>
+                    <p>
+						<a class="btn btn-primary page-scroll" href="/user/project/{{ id }}">Return to Project</a>
+                    </p>
 					{% else %}
 					<form id = "project" method="post" action="" enctype="multipart/form-data">
 
