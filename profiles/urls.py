@@ -10,6 +10,7 @@ urlpatterns = patterns('',
     url(r'^profile/(?P<user_id>\d+)/$', 'profiles.views.profile'),
 	url(r'^new_project/$', 'projects.views.new_project', name='new_project'),
 	url(r'^project/(?P<project_id>\d+)/$', 'projects.views.project'),
+	url(r'^project/(?P<project_id>\d+)/(?P<cell_id>\d+)/$', 'projects.views.jv'),
     url(r'^upload/', include('upload.urls')),
 	
 )

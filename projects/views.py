@@ -34,9 +34,16 @@ def new_project(request):
 def project(request, project_id=1):
     project = Project.objects.get(id=project_id)
     cells = Cell.objects.filter(project=project).order_by('-date')
-    data = Cell.objects.filter(project=project).values_list('eff', 'jsc', 'voc', 'ff',  'date')
+    data = Cell.objects.filter(project=project).values_list('eff', 'jsc', 'voc', 'ff',  'date', 'id')
     data_json = json.dumps(list(data), cls=DjangoJSONEncoder)
     dict = {'project': project,
             'cells': cells,
             'data_json': data_json}
     return render(request, 'project.html', dict)
+
+def jv(request, project_id=1, cell_id=1):
+    project = Project.objects.get(id=project_id)
+    cell = Cell.objects.get(id=cell_id)
+    dict = {'project': project,
+            'cell': cell}
+    return render(request, 'jv.html', dict)

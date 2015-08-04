@@ -83,6 +83,11 @@ p.justify {
     
 }
 
+.dashboard-abstract-section {
+    text-align: center;
+    background-color: #eee;
+}
+
 .articles {
     width: 98%;
     max-width: 600px;
