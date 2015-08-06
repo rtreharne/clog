@@ -1,0 +1,3 @@
+{{ message }}
+
+Go to you http://127.0.0.1:8000/user/register/{{ key }}/ to register your CLOGGER account.

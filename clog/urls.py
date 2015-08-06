@@ -7,6 +7,7 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     url(r'^user/', include('profiles.urls')),
     url(r'^upload/', include('upload.urls')),
+    url(r'^invite/', include('invite.urls')),
 )
 
 if settings.DEBUG:

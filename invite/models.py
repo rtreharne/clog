@@ -6,7 +6,7 @@ class Invitation(models.Model):
     email = models.EmailField(max_length=254)
     key = models.CharField(max_length=8)
     activated = models.BooleanField(default=False)
-    message = models.CharField(max_length=1000, blank=True)
+    message = models.TextField(max_length=1000, blank=True)
 
     def __unicode__(self):
         return self.email

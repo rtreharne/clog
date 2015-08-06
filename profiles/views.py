@@ -8,10 +8,19 @@ from profiles.models import UserProfile
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from projects.models import Project
+from invite.models import Invitation
+from django.core.exceptions import ObjectDoesNotExist
+from django.http import HttpResponseRedirect, HttpResponse
 
-def register(request):
+def register(request, key=''):
 
     registered = False
+
+    try:
+        invite_record = Invitation.objects.get(key=key)
+    except ObjectDoesNotExist:
+        return HttpResponseRedirect(reverse('home'))
+
 
     if request.method == 'POST':
         user_form = UserForm(data=request.POST)
@@ -35,7 +44,7 @@ def register(request):
             print user_form.errors, profile_form.errors
     
     else:
-        user_form = UserForm()
+        user_form = UserForm(instance=invite_record)
         profile_form = UserProfileForm()
 
     return render(request,
