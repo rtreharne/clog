@@ -1,0 +1,7 @@
+Django==1.7
+Pillow==2.9.0
+argparse==1.2.1
+django-multiupload==0.5
+numpy==1.9.2
+sorl-thumbnail==12.2
+wsgiref==0.1.2
