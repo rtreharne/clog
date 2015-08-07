@@ -4,6 +4,8 @@ from invite.forms import InviteForm
 from django.core.mail import send_mail, EmailMultiAlternatives
 from profiles.models import UserProfile
 import random
+from django.core.exceptions import ObjectDoesNotExist
+from invite.models import Invitation
 
 def key_gen():
 	return ''.join(random.choice('1234567890ABCDEF') for i in range(8))
@@ -14,13 +16,22 @@ def invite(request):
 
 	if request.method == 'POST':
 		invite_form = InviteForm(data=request.POST)
+                inviter = UserProfile.objects.get(user=request.user)
+
+                try:
+                    obj = Invitation.objects.get(owner=inviter, email=request.POST['email'])
+
+                    flag = True
+                    return render(request, 'invite.html', {'flag': flag})
+                except ObjectDoesNotExist:
+                    flag = False
 
 		if invite_form.is_valid():
 			invite = invite_form.save(commit=False)
 			invite.key = key_gen()
 			invite.message = request.POST['message'] + 'test_string'
-			inviter = UserProfile.objects.get(user=request.user)
 			invite.owner = inviter
+                        invite.activated = True
 			invite.save()
 
 			# Email message

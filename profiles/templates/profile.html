@@ -29,4 +29,32 @@
 			</div>
 		</div>
 	</section>
+
+    <section id="projects" class="dashboard-project-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+					<h2>{{profile.user.first_name}}'s Projects</h2>
+					{% if projects %}
+						<table class="tg">
+						  <tr>
+							<th class="tg-031e">Title</th>
+							<th class="tg-031e">Description</th>
+							<th class="tg-031e">Last Updated</th>
+						  </tr>
+						{% for project in projects %}
+						  <tr>
+							  <td class="tg-4eph"><a href="/user/project/{{project.id}}">{{project.title|slice:":50"}} ...</a></td>
+							  <td class="tg-4eph">{{project.description}}</td>
+							  <td class="tg-4eph">{{project.updated}}</td>
+						  </tr>
+						{% endfor %}
+						</table>		
+					{% else %}
+					    <p>No projects<p>
+				    {% endif %}
+                </div>
+            </div>
+		</div>
+    </section>
 {% endblock %}

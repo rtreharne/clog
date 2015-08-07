@@ -7,9 +7,14 @@
                 <div class="col-lg-12">
 					<h2>Invite a colleague</h2>
 
+					{% if flag %}
+					<p>You have already invited this person</p>
+					<a href="{% url 'home' %}">return to homepage</a>
+					{% else %}
+
 					{% if submitted %}
-					<p>Thanks! Your Invitation has ben sent.</p>
-					<a href="{% url 'home' %}">Return to homepage</a>
+					<p>Thanks! your invitation has ben sent.</p>
+					<a href="{% url 'home' %}">return to homepage</a>
 					{% else %}
 
 					<form id = "invite_form" method="post" action="/invite/">
@@ -21,6 +26,7 @@
 						<input class="btn btn-primary page-scroll" type="submit" name="submit" value="Invite" />
 
 					</form>
+					{% endif %}
 					{% endif %}
 
 				</div>

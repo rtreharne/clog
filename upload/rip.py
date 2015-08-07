@@ -2,8 +2,8 @@ from numpy import linspace, interp, sqrt
 
 class DataRip:
 
-    def __init__(self, x, y):
-        area = 2.5e-4
+    def __init__(self, x, y, area):
+        area = float(area/1000)
         self.x = x
         self.y = y/area
         self.n = 1000

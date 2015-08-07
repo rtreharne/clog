@@ -15,6 +15,7 @@ class Cell(models.Model):
     voc = models.DecimalField(max_digits=6, decimal_places=3, default=Decimal(0.000))
     ff = models.DecimalField(max_digits=6, decimal_places=3, default=Decimal(0.000))
     eff = models.DecimalField(max_digits=6, decimal_places=3, default=Decimal(0.000))
+    cell_area = models.DecimalField(max_digits=6, decimal_places=3, default=Decimal(0.25))
 
     date = models.DateTimeField(default=timezone.datetime.today)
     label = models.CharField(max_length=128)

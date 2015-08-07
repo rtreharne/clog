@@ -8,7 +8,7 @@ from projects.models import Project
 class ContactForm(forms.ModelForm):
     class Meta:
         model = Cell
-        fields = ['notes', 'date']
+        fields = ['notes', 'date', 'cell_area']
 
     files = MultiFileField(min_num=1, max_num=100, max_file_size=1024*1024*5)
 
@@ -21,7 +21,7 @@ class ContactForm(forms.ModelForm):
         attachment_inst = super(ContactForm, self).save(commit=False)
 
         for each in self.cleaned_data['files']:
-            params = self.get_cell_param(each)
+            params = self.get_cell_param(each, self.cleaned_data['cell_area'])
             
             if params == None:
                 continue    
@@ -34,12 +34,12 @@ class ContactForm(forms.ModelForm):
             
         return instance
 
-    def get_cell_param(self, filename):
+    def get_cell_param(self, filename, cell_area):
         import numpy as np
         try:
             x = np.loadtxt(filename, usecols=(0,))
             y = np.loadtxt(filename, usecols=(1,))
-            data = DataRip(x, y)
+            data = DataRip(x, y, cell_area)
         except ValueError:
             return None
 

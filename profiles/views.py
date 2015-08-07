@@ -18,9 +18,10 @@ def register(request, key=''):
 
     try:
         invite_record = Invitation.objects.get(key=key)
+        if invite_record.activated == True:
+            return HttpResponseRedirect(reverse('home'))
     except ObjectDoesNotExist:
         return HttpResponseRedirect(reverse('home'))
-
 
     if request.method == 'POST':
         user_form = UserForm(data=request.POST)
@@ -115,5 +116,10 @@ def update_profile(request):
 
 def profile(request, user_id=1):
 	profile = UserProfile.objects.get(user = User.objects.get(id=user_id))
-	dictionary = {'profile': profile}
+        if profile.user == request.user:
+            return HttpResponseRedirect(reverse('dashboard'))
+        
+        projects = Project.objects.filter(owner=profile)
+	dictionary = {'profile': profile,
+                      'projects': projects}
 	return render(request, 'profile.html', dictionary)

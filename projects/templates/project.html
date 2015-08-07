@@ -10,13 +10,17 @@
                     <p>{{project.description}}</p>
                     <div id=plot>
                     </div>
+					{% if project.owner.user == user %}}
                     <div class="col-lg-12 center">
                         <a class="btn btn-primary page-scroll" href="/user/upload/{{project.id}}/">Upload I-V Data</a>
                     </div>
+					{% endif %}
                 </div>
             </div>
         </div>
     </section>
+
+	{% if project.owner.user == user %}
 
     <section id="project" class="dashboard-abstract-section">
         <div class="container">
@@ -56,116 +60,10 @@
 		</div>
     </section>
 
-    <style>
-        .axis path,
-        .axis line {
-            fill: none;
-            stroke: black;
-            shape-rendering: crispEdges;
-        }
+	{% endif %}
 
-		.chart circle {
-			fill-opacity: .7;
-			fill: #337ab7;
-	    }
-
-        .chart circle:hover{
-            fill: red;
-            cursor:pointer;
-            r: 9;
-        }
-
-        .chart .label{
-            font-weight: 400;
-            font-size: 1em;
-        }
-    </style>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
     <script>
-
-        var dataset = {{data_json|safe }};
-        var eff = [];
-        for (i = 0; i < dataset.length; i++) {
-            dataset[i][4] = dataset[i][4].split('T')[0];
-            eff.push(dataset[i][0]);
-        }
-
-        var maxEff = Math.max.apply(Math, eff)*1.1;
-
-        var w = 900;
-        var h = 500;
-        var padding = 30;
-
-        var parseDate = d3.time.format.utc("%Y-%m-%d").parse;
-        var mindate = parseDate("2015-07-10"),
-            maxdate = parseDate("2015-08-05");
-
-        var xMax = d3.max(dataset, function(d) {return parseDate(d[4]); });
-        var xMin = d3.min(dataset, function(d) {return parseDate(d[4]); });
-
-        
-        console.log(dataset);
-        var diff = (xMax.getTime()-xMin.getTime())*0.05
-        xMax.setTime(xMax.getTime() +  diff);
-        xMin.setTime(xMin.getTime() -  diff);
-
-        var xScale = d3.time.scale()
-            .domain([xMin, xMax])
-            .range([padding, w - padding * 2]);
-
-        var yScale = d3.scale.linear()
-                              .domain([0, maxEff]) 
-            //.domain([0, d3.max(dataset, function (d) {
-                // return d[0];
-           // })])
-                             .range([h - padding, padding]);
-
-        var svg = d3.select("#plot")
-            .append("svg")
-            .attr('class', 'chart')
-            .attr("width", w)
-            .attr("height", h);
-        
-        var xAxis = d3.svg.axis()
-                          .scale(xScale)
-                          .orient("bottom");
-
-        var yAxis = d3.svg.axis()
-                          .scale(yScale)
-                          .orient("left");
-
-        svg.selectAll("circle")
-            .data(dataset)
-            .enter()
-            .append("circle")
-            .attr("id", function(d) {return d[5];})
-            .attr("cx", function(d) {
-                return xScale(parseDate(d[4]));
-            })
-            .attr("cy", function (d) {
-                return yScale(d[0]);
-            })
-            .attr("r", 5)    
-            .on("click", function(d){ window.location.replace(d3.select(this).attr("id")) }, 'id')
-
-        svg.append("g")
-          .attr("class", "axis")
-          .attr("transform", "translate(0," + (h - padding) + ")")
-          .call(xAxis)
-
-        svg.append("g")
-           .attr("class", "axis")
-           .attr("transform", "translate(" + padding + ",0)")
-           .call(yAxis)
-           .append("text")
-           .attr("class", "label")
-           .attr("transform", "rotate(-90)")
-           .attr("dy", "0.71em")
-           .attr("y", 10)
-           .style("text-anchor", "end")
-           .text("Efficiency (%)")
-
+    timelinePlot({{ data_json|safe }})
     </script>
 
 {% endblock %}

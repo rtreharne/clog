@@ -6,9 +6,9 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-					<h2>{{user.first_name}} {{user.last_name}}</h2>
+					<h2>{{profile.user.first_name}} {{profile.last_name}}</h2>
 					{% thumbnail profile.picture "150x150" crop="center" as im %}
-					<img class="profile-pic-lg" src="{{im.url}}" name="{{user.first_name}} {{user.last_name}}">
+					<img class="profile-pic-lg" src="{{im.url}}" name="{{profile.user.first_name}} {{profile.user.last_name}}">
 					{% endthumbnail %}
 					<h3>{{profile.affiliation}}</h3>
 					<p>

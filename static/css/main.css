@@ -405,4 +405,26 @@ div.navbar-collapse.navbar-ex1-collapse.collapse.in {
 	max-height: 380px;
 }
 
+/* ---------project plot -----------*/
+.axis path,
+.axis line {
+	fill: none;
+	stroke: black;
+	shape-rendering: crispEdges;
+}
 
+.chart circle {
+	fill-opacity: .7;
+	fill: #337ab7;
+}
+
+.chart circle:hover{
+	fill: red;
+	cursor:pointer;
+	r: 9;
+}
+
+.chart .label{
+	font-weight: 400;
+	font-size: 1em;
+}
