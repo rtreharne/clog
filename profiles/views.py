@@ -41,7 +41,7 @@ def register(request, key=''):
             profile.save()
 
             registered = True
-			invite_record.activated = True
+            invite_record.activated = True
 
         else:
             print user_form.errors, profile_form.errors
