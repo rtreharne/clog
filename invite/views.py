@@ -31,7 +31,7 @@ def invite(request):
 			invite.key = key_gen()
 			invite.message = request.POST['message'] + 'test_string'
 			invite.owner = inviter
-                        invite.activated = True
+                        invite.activated = False
 			invite.save()
 
 			# Email message
