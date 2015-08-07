@@ -32,7 +32,7 @@ def register(request, key=''):
             user.save()
 
             profile = profile_form.save(commit=False)
-			invite_record = Invitation.objects.get(key=key)
+            invite_record = Invitation.objects.get(key=key)
             profile.user = user
 
             if 'picture' in request.FILES:
