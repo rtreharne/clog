@@ -41,7 +41,7 @@ def invite(request):
 			html_content = render_to_string("email_html.html", {'message': request.POST['message'], 'key': invite.key, 'inviter': inviter})
 			email = request.POST['email']
 
-			msg = EmailMultiAlternatives(subject, text_content, 'rob.pvsat@gmail.com', [email])
+			msg = EmailMultiAlternatives(subject, text_content, 'clogger.message@gmail.com', [email])
 			msg.attach_alternative(html_content, "text/html")
 			msg.send()
                         
