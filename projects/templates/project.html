@@ -61,9 +61,12 @@
     </section>
 
 	{% endif %}
+{% endblock %}
 
+	{% block javascript %}
     <script>
     timelinePlot({{ data_json|safe }})
-    </script>
 
-{% endblock %}
+    </script>
+	{% endblock %}
+

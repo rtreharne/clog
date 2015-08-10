@@ -7,11 +7,8 @@
             <div class="row">
                 <div class="col-lg-12">
                     <h2>{{cell.label}}</h2>
-                    <p>{{cell.notes}}</p>
-                    <p>Efficiency: {{cell.eff}} %</p>
-                    <p>J<sub>SC</sub>: {{cell.jsc}} mA/cm<sup>2</sup></p>
-                    <p>V<sub>OC</sub>: {{cell.voc}} V</p>
-                    <p>Fill Factor: {{cell.ff}} %</p>
+					<p><strong>{{cell.notes}}</strong></p>
+                    <p>Efficiency: {{cell.eff}} %, J<sub>SC</sub>: {{cell.jsc}} mA/cm<sup>2</sup>, V<sub>OC</sub>: {{cell.voc}} V, Fill Factor: {{cell.ff}} %</p>
                     <div id=plot>
                     </div>
                     <div class="col-lg-12 center">
@@ -50,9 +47,13 @@
             shape-rendering: crispEdges;
         }
     </style>
-
-    <script>
-    jvPlot('{{cell.file}}')
-    </script>
-
 {% endblock %}
+
+{% block javascript %}
+    <script>
+
+    jvPlot('{{cell.file}}')
+
+    </script>
+{% endblock %}
+

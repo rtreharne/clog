@@ -1,3 +1,7 @@
+var width = $("#plot").width();
+var height = $("body").height();
+console.log(width);
+console.log(height);
 function timelinePlot(input) {
 
 	var dataset = input;
@@ -9,9 +13,9 @@ function timelinePlot(input) {
 
 	var maxEff = Math.max.apply(Math, eff)*1.1;
 
-	var w = 900;
-	var h = 500;
-	var padding = 30;
+	var w = width;
+	var h = height * 0.6;
+	var padding = 40;
 
 	var parseDate = d3.time.format.utc("%Y-%m-%d").parse;
 	var mindate = parseDate("2015-07-10"),
@@ -21,14 +25,13 @@ function timelinePlot(input) {
 	var xMin = d3.min(dataset, function(d) {return parseDate(d[4]); });
 
 	
-	console.log(dataset);
 	var diff = (xMax.getTime()-xMin.getTime())*0.05
 	xMax.setTime(xMax.getTime() + (24*60*60*1000) + diff);
 	xMin.setTime(xMin.getTime() -  (24*60*60*1000) - diff);
 
 	var xScale = d3.time.scale()
 		.domain([xMin, xMax])
-		.range([padding, w - padding * 2]);
+		.range([padding, w - padding]);
 
 	var yScale = d3.scale.linear()
 						  .domain([0, maxEff]) 
@@ -49,7 +52,8 @@ function timelinePlot(input) {
 
 	var yAxis = d3.svg.axis()
 					  .scale(yScale)
-					  .orient("left");
+					  .orient("left")
+	                  .ticks(5);
 
 	svg.selectAll("circle")
 		.data(dataset)
@@ -62,13 +66,13 @@ function timelinePlot(input) {
 		.attr("cy", function (d) {
 			return yScale(d[0]);
 		})
-		.attr("r", 5)    
-		.on("click", function(d){ window.location.replace(d3.select(this).attr("id")) }, 'id')
+		.attr("r", 8)    
+		.on("click", function(d){ window.location.replace(d3.select(this).attr("id")) }, 'id');
 
 	svg.append("g")
 	  .attr("class", "axis")
 	  .attr("transform", "translate(0," + (h - padding) + ")")
-	  .call(xAxis)
+	  .call(xAxis);
 
 	svg.append("g")
 	   .attr("class", "axis")
@@ -79,15 +83,16 @@ function timelinePlot(input) {
 	   .attr("transform", "rotate(-90)")
 	   .attr("dy", "0.71em")
 	   .attr("y", 10)
+	   .attr("x", -padding)
 	   .style("text-anchor", "end")
-	   .text("Efficiency (%)")
+	   .text("Efficiency (%)");
 }
 
 function jvPlot(file) {
 
-	var w = 900;
-	var h = 500;
-	var padding = 60;
+	var w = $('#plot').width();
+	var h = height * 0.6;
+	var padding = 40;
 
 	var file = '/media/'+ file;
 
@@ -106,7 +111,6 @@ function jvPlot(file) {
 		for(var i=0; i<dataset.length; i++) {
 			dataset[i][1] *= 4000;
 			}
-		console.log(dataset);
 
 		var svg = d3.select("#plot")
 					.append("svg")

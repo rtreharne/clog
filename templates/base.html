@@ -25,9 +25,6 @@
     <link href="{% static 'css/main.css' %}" rel="stylesheet" media="screen">
 	<link href="{% static 'css/modern-business.css' %}" rel="stylesheet">
 
-	<!-- d3.sj and plotting scripts-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
-    <script src="{% static 'js/plotting.js' %}"></script>
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -114,6 +111,13 @@
     <!-- Scrolling Nav JavaScript -->
     <script src="{% static 'js/jquery.easing.min.js' %}"></script>
     <script src="{% static 'js/scrolling-nav.js' %}"></script>
+
+	<!-- d3.sj and plotting scripts-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
+    <script src="{% static 'js/plotting.js' %}"></script>
+
+	{% block javascript %}
+	{% endblock %}
 
 </body>
 

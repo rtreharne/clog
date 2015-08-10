@@ -244,9 +244,10 @@ p.small {
  
 .dashboard-profile-section {
     background: #fff;
-    padding-top: 100px;
+    padding-top: 50px;
     padding-bottom: 50px;
     text-align: center;
+	min-height: 100%;
 }
 
 .dashboard-profile-section img {
