@@ -57,7 +57,6 @@ def get_stats(data):
     #stats_json = json.dumps(list(stats), cls=DjangoJSONEncoder)
     return stats 
 
-@login_required
 def project(request, project_id=1):
     project = Project.objects.get(id=project_id)
     try:
