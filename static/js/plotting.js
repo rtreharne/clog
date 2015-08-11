@@ -2,14 +2,22 @@ var width = $("#plot").width();
 var height = $("body").height();
 console.log(width);
 console.log(height);
-function timelinePlot(input) {
+function timelinePlot(input, stats) {
 
-	var dataset = input;
+	var dataset = input,
+		stats_input = stats;
+
 	var eff = [];
 	for (i = 0; i < dataset.length; i++) {
 		dataset[i][4] = dataset[i][4].split('T')[0];
 		eff.push(dataset[i][0]);
 	}
+
+	for (i = 0; i < stats_input.length; i++) {
+		stats_input[i][0] = stats_input[i][0].split('T')[0];
+	};
+
+	console.log(stats_input)
 
 	var maxEff = Math.max.apply(Math, eff)*1.1;
 
@@ -45,6 +53,15 @@ function timelinePlot(input) {
 		.attr('class', 'chart')
 		.attr("width", w)
 		.attr("height", h);
+
+	var valueline = d3.svg.line()
+		.x(function(d) { return xScale(parseDate(d[0])); })
+		.y(function(d) { return yScale(d[1]); });
+
+	var area = d3.svg.area()
+		.interpolate("monotone")
+		.x(function(d) { return xScale(parseDate(d[0])); })
+		.y(function(d) { return yScale(d[1]); })
 	
 	var xAxis = d3.svg.axis()
 					  .scale(xScale)
@@ -69,6 +86,12 @@ function timelinePlot(input) {
 		.attr("r", 8)    
 		.on("click", function(d){ window.location.replace(d3.select(this).attr("id")) }, 'id');
 
+
+	svg.append("path")
+		.attr("class", "line")
+		.attr("d", area(stats_input));
+
+	
 	svg.append("g")
 	  .attr("class", "axis")
 	  .attr("transform", "translate(0," + (h - padding) + ")")

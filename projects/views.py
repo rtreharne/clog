@@ -34,6 +34,7 @@ def new_project(request):
     return render(request, 'new_project.html', {'project_form': project_form, 'submitted': submitted})
 
 def get_stats(data):
+    import numpy
     build = []
     elist = []
     stats = []
@@ -46,13 +47,14 @@ def get_stats(data):
             continue
 
         else:
-            stats.append([datetime.fromtimestamp(current).strftime("%Y-%m-%dT%H:%M:%S"), elist])
+            stats.append([datetime.fromtimestamp(current).strftime("%Y-%m-%dT%H:%M:%S"), numpy.mean(elist)])
             current = build[-1][1]
             elist = [build[-1][0]]
 
     #stats_json = json.dumps(list(stats), cls=DjangoJSONEncoder)
     return stats 
 
+@login_required
 def project(request, project_id=1):
     project = Project.objects.get(id=project_id)
     cells = Cell.objects.filter(project=project).order_by('-date')

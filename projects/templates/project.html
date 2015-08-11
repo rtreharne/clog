@@ -65,10 +65,7 @@
 
 	{% block javascript %}
     <script>
-    timelinePlot({{ data_json|safe }});
-	console.log({{ stats|safe }});
-	console.log({{ data_json|safe }});
-
+		timelinePlot({{ data_json|safe }}, {{ stats|safe }});
     </script>
 	{% endblock %}
 

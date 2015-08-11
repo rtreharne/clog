@@ -414,6 +414,11 @@ div.navbar-collapse.navbar-ex1-collapse.collapse.in {
 	shape-rendering: crispEdges;
 }
 
+path.line {
+	fill: none;
+	stroke: red;
+}
+
 .chart circle {
 	fill-opacity: .7;
 	fill: #337ab7;
