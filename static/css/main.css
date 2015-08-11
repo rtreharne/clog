@@ -416,7 +416,9 @@ div.navbar-collapse.navbar-ex1-collapse.collapse.in {
 
 path.line {
 	fill: none;
-	stroke: red;
+	stroke: steelblue;
+	shape-rendering: crispEdges;
+    stroke-width: 1px;
 }
 
 .chart circle {

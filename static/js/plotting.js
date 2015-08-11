@@ -59,7 +59,7 @@ function timelinePlot(input, stats) {
 		.y(function(d) { return yScale(d[1]); });
 
 	var area = d3.svg.area()
-		.interpolate("monotone")
+		.interpolate("basis")
 		.x(function(d) { return xScale(parseDate(d[0])); })
 		.y(function(d) { return yScale(d[1]); })
 	
@@ -71,6 +71,10 @@ function timelinePlot(input, stats) {
 					  .scale(yScale)
 					  .orient("left")
 	                  .ticks(5);
+	
+	svg.append("path")
+		.attr("class", "line")
+		.attr("d", area(stats_input));
 
 	svg.selectAll("circle")
 		.data(dataset)
@@ -86,12 +90,6 @@ function timelinePlot(input, stats) {
 		.attr("r", 8)    
 		.on("click", function(d){ window.location.replace(d3.select(this).attr("id")) }, 'id');
 
-
-	svg.append("path")
-		.attr("class", "line")
-		.attr("d", area(stats_input));
-
-	
 	svg.append("g")
 	  .attr("class", "axis")
 	  .attr("transform", "translate(0," + (h - padding) + ")")

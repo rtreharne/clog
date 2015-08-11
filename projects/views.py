@@ -38,7 +38,7 @@ def get_stats(data):
     build = []
     elist = []
     stats = []
-    delta = 1.0
+    delta =86400.0 
     current = time.mktime(data[0].date.timetuple())
     for dat in data:
         build.append([float(dat.eff), time.mktime(dat.date.timetuple())])
@@ -51,14 +51,20 @@ def get_stats(data):
             current = build[-1][1]
             elist = [build[-1][0]]
 
+    current = build[-1][1]
+    stats.append([datetime.fromtimestamp(current).strftime("%Y-%m-%dT%H:%M:%S"), numpy.mean(elist)])
+
     #stats_json = json.dumps(list(stats), cls=DjangoJSONEncoder)
     return stats 
 
 @login_required
 def project(request, project_id=1):
     project = Project.objects.get(id=project_id)
-    cells = Cell.objects.filter(project=project).order_by('-date')
-    stats = get_stats(cells)
+    try:
+        cells = Cell.objects.filter(project=project).order_by('-date')
+        stats = get_stats(cells)
+    except IndexError:
+        stats = None
     data = Cell.objects.filter(project=project).values_list('eff', 'jsc', 'voc', 'ff',  'date', 'id')
     data_json = json.dumps(list(data), cls=DjangoJSONEncoder)
     dict = {'project': project,
