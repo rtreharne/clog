@@ -1,6 +1,6 @@
 from django import forms
 from multiupload.fields import MultiFileField
-from .rip import DataRip
+from .rip import DataRip, get_cell_param
 from .models import Cell
 from projects.models import Project
 
@@ -21,7 +21,7 @@ class ContactForm(forms.ModelForm):
         attachment_inst = super(ContactForm, self).save(commit=False)
 
         for each in self.cleaned_data['files']:
-            params = self.get_cell_param(each, self.cleaned_data['cell_area'])
+            params = get_cell_param(each, self.cleaned_data['cell_area'])
             
             if params == None:
                 continue    
@@ -33,15 +33,3 @@ class ContactForm(forms.ModelForm):
             Cell.objects.create(file=each, notes=attachment_inst.notes, date=attachment_inst.date, label=each.name, project=instance, jsc=jsc, voc=voc, ff=ff, eff=eff)
             
         return instance
-
-    def get_cell_param(self, filename, cell_area):
-        import numpy as np
-        try:
-            x = np.loadtxt(filename, usecols=(0,))
-            y = np.loadtxt(filename, usecols=(1,))
-            data = DataRip(x, y, cell_area)
-        except ValueError:
-            return None
-
-        return data
-
