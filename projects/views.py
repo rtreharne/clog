@@ -72,6 +72,21 @@ def project(request, project_id=1):
             'stats': stats}
     return render(request, 'project.html', dict)
 
+def focus(request, project_id=1):
+    project = Project.objects.get(id=project_id)
+    try:
+        cells = Cell.objects.filter(project=project).order_by('-date')
+        stats = get_stats(cells)
+    except IndexError:
+        stats = None
+    data = Cell.objects.filter(project=project).values_list('eff', 'jsc', 'voc', 'ff',  'date', 'id')
+    data_json = json.dumps(list(data), cls=DjangoJSONEncoder)
+    dict = {'project': project,
+            'cells': cells,
+            'data_json': data_json,
+            'stats': stats}
+    return render(request, 'focus.html', dict)
+
 def jv(request, project_id=1, cell_id=1):
     project = Project.objects.get(id=project_id)
     cell = Cell.objects.get(id=cell_id)

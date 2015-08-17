@@ -23,6 +23,12 @@ function timelinePlot(input, stats) {
 
 	var w = width;
 	var h = height * 0.6;
+    var margin = {top: 10, right: 10, bottom: 100, left: 40},
+        margin2 = {top: 430, right: 10, bottom: 20, left: 40},
+        width = 960 - margin.left - margin.right,
+        height = 500 - margin.top - margin.bottom,
+        height2 = 500 - margin2.top - margin2.bottom;
+
 	var padding = 40;
 
 	var parseDate = d3.time.format.utc("%Y-%m-%d").parse;
@@ -33,27 +39,42 @@ function timelinePlot(input, stats) {
 	var xMin = d3.min(dataset, function(d) {return parseDate(d[4]); });
 
 	
-	var diff = (xMax.getTime()-xMin.getTime())*0.05
+	var diff = (xMax.getTime()-xMin.getTime())*0.05;
 	xMax.setTime(xMax.getTime() + (24*60*60*1000) + diff);
 	xMin.setTime(xMin.getTime() -  (24*60*60*1000) - diff);
 
 	var xScale = d3.time.scale()
 		.domain([xMin, xMax])
-		.range([padding, w - padding]);
+		.range([0, width]);
+
+	var xScale2 = d3.time.scale()
+		.domain([xMin, xMax])
+		.range([0, width]);
 
 	var yScale = d3.scale.linear()
 						  .domain([0, maxEff]) 
-		//.domain([0, d3.max(dataset, function (d) {
-			// return d[0];
-	   // })])
-						 .range([h - padding, padding]);
+						  .range([height,0]);
 
 	var svg = d3.select("#plot")
 		.append("svg")
 		.attr('class', 'chart')
-		.attr("width", w)
-		.attr("height", h);
+		.attr("width", width + margin.left + margin.right)
+		.attr("height", height + margin.top + margin.bottom);
 
+    svg.append("defs").append("clipPath")
+        .attr("id", "clip")
+      .append("rect")
+        .attr("width", width)
+        .attr("height", height);
+
+    var focus = svg.append("g")
+        .attr("class", "focus")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    var context = svg.append("g")
+        .attr("class", "context")
+        .attr("transform", "translate(" + margin2.left + "," + margin2.top + ")");
+    
 	var valueline = d3.svg.line()
 		.x(function(d) { return xScale(parseDate(d[0])); })
 		.y(function(d) { return yScale(d[1]); });
@@ -72,11 +93,15 @@ function timelinePlot(input, stats) {
 					  .orient("left")
 	                  .ticks(5);
 	
-	svg.append("path")
+	focus.append("path")
 		.attr("class", "line")
 		.attr("d", area(stats_input));
 
-	svg.selectAll("circle")
+    focus.append("g")
+        .attr("class", "x axis")
+        .attr("transform(0," + height + ")")
+
+	focus.selectAll("circle")
 		.data(dataset)
 		.enter()
 		.append("circle")
@@ -90,23 +115,14 @@ function timelinePlot(input, stats) {
 		.attr("r", 8)    
 		.on("click", function(d){ window.location.replace(d3.select(this).attr("id")) }, 'id');
 
-	svg.append("g")
-	  .attr("class", "axis")
-	  .attr("transform", "translate(0," + (h - padding) + ")")
+	focus.append("g")
+	  .attr("class", "x axis")
+	  .attr("transform", "translate(0," + height + ")")
 	  .call(xAxis);
 
-	svg.append("g")
-	   .attr("class", "axis")
-	   .attr("transform", "translate(" + padding + ",0)")
+	focus.append("g")
+	   .attr("class", "y axis")
 	   .call(yAxis)
-	   .append("text")
-	   .attr("class", "label")
-	   .attr("transform", "rotate(-90)")
-	   .attr("dy", "0.71em")
-	   .attr("y", 10)
-	   .attr("x", -padding)
-	   .style("text-anchor", "end")
-	   .text("Efficiency (%)");
 }
 
 function jvPlot(file) {
