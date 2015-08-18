@@ -97,14 +97,15 @@ function timelinePlot(input, stats) {
 	                  .ticks(5);
 
 	var xAxis2 = d3.svg.axis().scale(xScale2).orient("bottom");
+
+	var brush = d3.svg.brush()
+	    .x(xScale2)
+		.on("brush", brushed);
 	
 	focus.append("path")
 		.attr("class", "line")
 		.attr("d", area(stats_input));
 
-    focus.append("g")
-        .attr("class", "x axis")
-        .attr("transform(0," + height + ")")
 
     context.append("g")
         .attr("class", "x axis")
@@ -119,6 +120,7 @@ function timelinePlot(input, stats) {
 		.attr("cx", function(d) {
 			return xScale2(parseDate(d[4]));
 		})
+		.attr("x", margin.left)
 		.attr("cy", function (d) {
 			return yScale2(d[0]);
 		})
@@ -147,7 +149,25 @@ function timelinePlot(input, stats) {
 	focus.append("g")
 	   .attr("class", "y axis")
 	   .call(yAxis);
+
+    context.append("g")
+	    .attr("class", "x brush")
+		.call(brush)
+	  .selectAll("rect")
+	    .attr("y", -6)
+		.attr("height", height2 + 7);
+
+	function brushed() {
+		xScale.domain(brush.empty() ? xScale2.domain() : brush.extent());
+		focus.selectAll("circle")
+		     .attr("cx", function(d) {return xScale(parseDate(d[4]));});
+	    focus.select(".line")
+		     .attr("d", area(stats_input));
+		focus.select(".x.axis").call(xAxis);
+	}
+	
 }
+
 
 function jvPlot(file) {
 

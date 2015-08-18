@@ -436,3 +436,10 @@ path.line {
 	font-weight: 400;
 	font-size: 1em;
 }
+
+.brush .extent {
+  stroke: steelblue;
+  fill: steelblue;
+  fill-opacity: .125;
+  shape-rendering: crispEdges;
+}
