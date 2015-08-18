@@ -2,6 +2,7 @@ var width = $("#plot").width();
 var height = $("body").height();
 console.log(width);
 console.log(height);
+
 function timelinePlot(input, stats) {
 
 	var dataset = input,
@@ -21,13 +22,11 @@ function timelinePlot(input, stats) {
 
 	var maxEff = Math.max.apply(Math, eff)*1.1;
 
-	var w = width;
-	var h = height * 0.6;
-    var margin = {top: 10, right: 10, bottom: 100, left: 40},
-        margin2 = {top: 430, right: 10, bottom: 20, left: 40},
-        width = 960 - margin.left - margin.right,
-        height = 500 - margin.top - margin.bottom,
-        height2 = 500 - margin2.top - margin2.bottom;
+	var margin = {top: 10, right: 10, bottom: 100, left: 40},
+	margin2 = {top: 430, right: 10, bottom: 20, left: 40},
+	width = 960 - margin.left - margin.right,
+	height = 500 - margin.top - margin.bottom,
+	height2 = 500 - margin2.top - margin2.bottom;
 
 	var padding = 40;
 
@@ -54,6 +53,10 @@ function timelinePlot(input, stats) {
 	var yScale = d3.scale.linear()
 						  .domain([0, maxEff]) 
 						  .range([height,0]);
+	var yScale2 = d3.scale.linear()
+	                      .domain([0, maxEff])
+						  .range([height2,0]);
+
 
 	var svg = d3.select("#plot")
 		.append("svg")
@@ -92,6 +95,8 @@ function timelinePlot(input, stats) {
 					  .scale(yScale)
 					  .orient("left")
 	                  .ticks(5);
+
+	var xAxis2 = d3.svg.axis().scale(xScale2).orient("bottom");
 	
 	focus.append("path")
 		.attr("class", "line")
@@ -100,6 +105,25 @@ function timelinePlot(input, stats) {
     focus.append("g")
         .attr("class", "x axis")
         .attr("transform(0," + height + ")")
+
+    context.append("g")
+        .attr("class", "x axis")
+		.attr("transform", "translate(0," + height2 + ")")
+		.call(xAxis2);
+
+	context.selectAll("circle")
+	    .data(dataset)
+		.enter()
+		.append("circle")
+		.attr("class", "dot")
+		.attr("cx", function(d) {
+			return xScale2(parseDate(d[4]));
+		})
+		.attr("cy", function (d) {
+			return yScale2(d[0]);
+		})
+		.attr("r", 2);
+
 
 	focus.selectAll("circle")
 		.data(dataset)
@@ -122,7 +146,7 @@ function timelinePlot(input, stats) {
 
 	focus.append("g")
 	   .attr("class", "y axis")
-	   .call(yAxis)
+	   .call(yAxis);
 }
 
 function jvPlot(file) {
